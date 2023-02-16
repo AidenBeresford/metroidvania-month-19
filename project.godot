@@ -11,7 +11,14 @@ config_version=4
 [application]
 
 config/name="Metroidvania Month"
+run/main_scene="res://scenes/rooms/ROOM_DBG_00.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/size/width=1920
+window/size/height=1080
+window/size/borderless=true
 
 [gui]
 
