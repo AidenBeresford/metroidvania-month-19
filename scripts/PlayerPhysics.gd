@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-enum STATE {IDLE, WALK, DASH, JUMP, FALL, DEATH}
+enum STATE {IDLE, WALK, DASH, JUMP, HOVER, FALL, DEATH}
 enum DIR {LEFT, RIGHT}
 
 onready var anim_tree = get_node("AnimationTree")
@@ -9,6 +9,7 @@ onready var playback = anim_tree.get("parameters/playback")
 var velocity = Vector2()
 var state = STATE
 var dir = DIR.RIGHT
+var dirval = 1
 
 const SPD = 180
 const DSH = 1.5
@@ -18,10 +19,7 @@ const GRV = 20
 
 func _physics_process(delta):
 	
-	velocity.y += GRV
-	
 	state_manager()
-	print(velocity)
 	
 	# player abilities based on state
 	match state:
@@ -43,14 +41,30 @@ func _physics_process(delta):
 		STATE.DASH:
 			playback.travel("Dash")
 			
+			if !is_on_floor():
+				velocity.y += GRV
+			
 			jump()
 			dash()
 		
 		STATE.JUMP:
+			playback.travel("Jump")
+			
+			velocity.y += GRV
+			turn()
+			walk()
+		
+		STATE.HOVER:
+			playback.travel("Hover")
+			
+			velocity.y += GRV
 			turn()
 			walk()
 		
 		STATE.FALL:
+			playback.travel("Fall")
+			
+			velocity.y += GRV
 			turn()
 			walk()
 		
@@ -73,11 +87,15 @@ func state_manager():
 				state = STATE.IDLE
 			else:
 				state = STATE.WALK
-	elif !Input.is_action_pressed("dash"):
-		if velocity.y >= 0:
-			state = STATE.JUMP
-		else:
-			state = STATE.FALL
+	else:
+		
+		if !Input.is_action_pressed("dash"):
+			if velocity.y <= 40 and velocity.y >= -40:
+				state = STATE.HOVER
+			elif velocity.y < 10:
+				state = STATE.JUMP
+			elif velocity.y > 10:
+				state = STATE.FALL
 
 
 func turn():
@@ -85,9 +103,11 @@ func turn():
 	if Input.is_action_pressed("right"):
 		$Sprite.flip_h = false
 		dir = DIR.RIGHT
+		dirval = 1
 	elif Input.is_action_pressed("left"):
 		$Sprite.flip_h = true
 		dir = DIR.LEFT
+		dirval = -1
 
 
 func walk():
@@ -108,15 +128,7 @@ func jump():
 		velocity.y = JMP
 
 func dash():
-	
-	if Input.is_action_pressed("dash"):
-		if dir == DIR.LEFT:
-			velocity.x = SPD*-DSH
-		elif dir == DIR.RIGHT:
-			velocity.x = SPD*DSH
-	
-	if Input.is_action_just_released("dash"):
-		velocity.x = 0
+	velocity.x = SPD*DSH*dirval
 
 
 func absround(num):
