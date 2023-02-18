@@ -2,41 +2,56 @@ extends KinematicBody2D
 
 enum STATE {IDLE, WALK, DASH, JUMP, FALL, DEATH}
 enum DIR {LEFT, RIGHT}
+
+onready var anim_tree = get_node("AnimationTree")
+onready var playback = anim_tree.get("parameters/playback")
+
 var velocity = Vector2()
 var state = STATE
 var dir = DIR.RIGHT
 
 const SPD = 180
 const DSH = 1.5
-const JMP = -500
-const GRV = -25
+const JMP = -700
+const GRV = 20
 
 
 func _physics_process(delta):
 	
-	velocity.y += 25
+	velocity.y += GRV
 	
 	state_manager()
+	print(velocity)
 	
 	# player abilities based on state
 	match state:
 		
 		STATE.IDLE:
+			playback.travel("Idle")
+			
+			turn()
 			walk()
 			jump()
 		
 		STATE.WALK:
+			playback.travel("Walk")
+			
+			turn()
 			walk()
 			jump()
 		
 		STATE.DASH:
+			playback.travel("Dash")
+			
 			jump()
 			dash()
 		
 		STATE.JUMP:
+			turn()
 			walk()
 		
 		STATE.FALL:
+			turn()
 			walk()
 		
 		STATE.DEATH:
@@ -54,19 +69,24 @@ func state_manager():
 		if Input.is_action_pressed("dash"):
 			state = STATE.DASH
 		else:
-			if velocity.x != 0:
-				state = STATE.WALK
-			else:
+			if absround(velocity.x) < 10:
 				state = STATE.IDLE
+			else:
+				state = STATE.WALK
 	elif !Input.is_action_pressed("dash"):
 		if velocity.y >= 0:
 			state = STATE.JUMP
 		else:
 			state = STATE.FALL
+
+
+func turn():
 	
 	if Input.is_action_pressed("right"):
+		$Sprite.flip_h = false
 		dir = DIR.RIGHT
 	elif Input.is_action_pressed("left"):
+		$Sprite.flip_h = true
 		dir = DIR.LEFT
 
 
@@ -97,3 +117,7 @@ func dash():
 	
 	if Input.is_action_just_released("dash"):
 		velocity.x = 0
+
+
+func absround(num):
+	return abs(round(num))
