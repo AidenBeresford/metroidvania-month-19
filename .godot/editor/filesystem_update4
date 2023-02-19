@@ -1,0 +1,3 @@
+res://scenes/rooms/ROOM_DBG_00.tscn
+res://scripts/PlayerPhysics.gd
+res://scenes/character/PLAYER.tscn

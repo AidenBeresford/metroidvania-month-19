@@ -17,7 +17,7 @@ var statelock = false
 
 const SPD = 180
 const DSH = 1.5
-const JMP = -900
+const JMP = -800
 const GRV = 25
 
 
@@ -46,7 +46,7 @@ func _physics_process(delta):
 		STATE.DASH:
 			playback.travel("Dash")
 			
-			if !is_on_floor():
+			if !grounded():
 				velocity.y += GRV
 			
 			jump()
@@ -92,12 +92,12 @@ func _physics_process(delta):
 		STATE.DEATH:
 			pass
 	
-	move_and_slide(velocity, Vector2.UP)
+	move_and_slide_with_snap(velocity, Vector2(), Vector2.UP)
 
 
 func state_manager():
 	
-	if is_on_floor():
+	if grounded():
 		
 		velocity.y = 0
 		
@@ -158,7 +158,7 @@ func walk():
 func jump():
 	
 	# jump command for idle and walk states
-	if Input.is_action_pressed("jump") and is_on_floor():
+	if Input.is_action_pressed("jump") and grounded():
 		velocity.y = JMP
 
 
@@ -173,7 +173,13 @@ func knockback():
 	
 	velocity.x = 300*-dirval
 	velocity.y = -600
-	
+
+
+func grounded():
+	if $Floor1.is_colliding() or $Floor2.is_colliding():
+		return true
+	else:
+		return false
 
 
 func _on_Heal_timeout():
