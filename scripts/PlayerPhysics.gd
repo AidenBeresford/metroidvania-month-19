@@ -16,7 +16,7 @@ var dirval = 1
 var statelock = false
 
 const SPD = 180
-const DSH = 1.5
+const DSH = 2
 const JMP = -800
 const GRV = 25
 
