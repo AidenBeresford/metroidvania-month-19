@@ -1,6 +1,9 @@
 extends KinematicBody2D
 
-enum STATE {IDLE, WALK, DASH, JUMP, HOVER, FALL, DEATH}
+enum STATE {IDLE, WALK, DASH, 
+JUMP, HOVER, FALL,
+HEALING, KNOCKBACK, DEATH}
+
 enum DIR {LEFT, RIGHT}
 
 onready var anim_tree = get_node("AnimationTree")
@@ -10,16 +13,18 @@ var velocity = Vector2()
 var state = STATE
 var dir = DIR.RIGHT
 var dirval = 1
+var statelock = false
 
 const SPD = 180
 const DSH = 1.5
-const JMP = -700
-const GRV = 20
+const JMP = -900
+const GRV = 25
 
 
 func _physics_process(delta):
 	
-	state_manager()
+	if !statelock:
+		state_manager()
 	
 	# player abilities based on state
 	match state:
@@ -68,6 +73,22 @@ func _physics_process(delta):
 			turn()
 			walk()
 		
+		STATE.HEALING:
+			playback.travel("Heal")
+			
+			velocity.x = 0
+			
+			if $Heal.is_stopped():
+				$Heal.start(.4)
+		
+		STATE.KNOCKBACK:
+			playback.travel("Fall")
+			
+			velocity.y += GRV*2
+			
+			if $Knockback.is_stopped():
+				$Knockback.start(.5)
+		
 		STATE.DEATH:
 			pass
 	
@@ -81,9 +102,17 @@ func state_manager():
 		velocity.y = 0
 		
 		if Input.is_action_pressed("dash"):
-			state = STATE.DASH
+			if !is_on_wall():
+				state = STATE.DASH
+			else:
+				knockback()
+			
+		elif Input.is_action_pressed("heal"):
+			state = STATE.HEALING
 		else:
-			if absround(velocity.x) < 10:
+			$Heal.stop()
+			
+			if meth.absround(velocity.x) < 10:
 				state = STATE.IDLE
 			else:
 				state = STATE.WALK
@@ -96,6 +125,11 @@ func state_manager():
 				state = STATE.JUMP
 			elif velocity.y > 10:
 				state = STATE.FALL
+		else:
+			if !is_on_wall():
+				state = STATE.DASH
+			else:
+				knockback()
 
 
 func turn():
@@ -127,9 +161,26 @@ func jump():
 	if Input.is_action_pressed("jump") and is_on_floor():
 		velocity.y = JMP
 
+
 func dash():
 	velocity.x = SPD*DSH*dirval
 
 
-func absround(num):
-	return abs(round(num))
+func knockback():
+	
+	state = STATE.KNOCKBACK
+	statelock = true
+	
+	velocity.x = 300*-dirval
+	velocity.y = -600
+	
+
+
+func _on_Heal_timeout():
+	pass
+
+
+func _on_Knockback_timeout():
+	statelock = false
+	velocity.x = 0
+	state = STATE.IDLE

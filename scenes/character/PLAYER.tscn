@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=2]
+[gd_scene load_steps=73 format=2]
 
 [ext_resource path="res://assets/sprites/player/idle/tile001.png" type="Texture" id=1]
 [ext_resource path="res://scripts/PlayerPhysics.gd" type="Script" id=2]
@@ -33,6 +33,11 @@
 [ext_resource path="res://assets/sprites/player/fall/tile076.png" type="Texture" id=31]
 [ext_resource path="res://assets/sprites/player/fall/tile077.png" type="Texture" id=32]
 [ext_resource path="res://assets/sprites/player/hover/tile071.png" type="Texture" id=33]
+[ext_resource path="res://assets/sprites/player/heal/tile093.png" type="Texture" id=34]
+[ext_resource path="res://assets/sprites/player/heal/tile095.png" type="Texture" id=35]
+[ext_resource path="res://assets/sprites/player/heal/tile092.png" type="Texture" id=36]
+[ext_resource path="res://assets/sprites/player/heal/tile091.png" type="Texture" id=37]
+[ext_resource path="res://assets/sprites/player/heal/tile094.png" type="Texture" id=38]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 37.5, 40 )
@@ -69,6 +74,23 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ ExtResource( 31 ), ExtResource( 32 ) ]
+}
+
+[sub_resource type="Animation" id=30]
+resource_name = "Heal"
+length = 0.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 37 ), ExtResource( 36 ), ExtResource( 34 ), ExtResource( 38 ), ExtResource( 35 ), ExtResource( 1 ) ]
 }
 
 [sub_resource type="Animation" id=22]
@@ -160,6 +182,9 @@ animation = "Dash"
 [sub_resource type="AnimationNodeAnimation" id=23]
 animation = "Fall"
 
+[sub_resource type="AnimationNodeAnimation" id=31]
+animation = "Heal"
+
 [sub_resource type="AnimationNodeAnimation" id=24]
 animation = "Hover"
 
@@ -198,22 +223,30 @@ animation = "Walk"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=29]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=32]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=33]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=34]
+
 [sub_resource type="AnimationNodeStateMachine" id=3]
 states/Dash/node = SubResource( 8 )
 states/Dash/position = Vector2( 367, 170.5 )
 states/Fall/node = SubResource( 23 )
 states/Fall/position = Vector2( 437.25, -24.6299 )
+states/Heal/node = SubResource( 31 )
+states/Heal/position = Vector2( 370.656, 261.294 )
 states/Hover/node = SubResource( 24 )
 states/Hover/position = Vector2( 368.875, -115.754 )
 states/Idle/node = SubResource( 9 )
-states/Idle/position = Vector2( 293, 78 )
+states/Idle/position = Vector2( 298.5, 79.5 )
 states/Jump/node = SubResource( 18 )
 states/Jump/position = Vector2( 292.672, -24 )
 states/Walk/node = SubResource( 10 )
 states/Walk/position = Vector2( 437.5, 79 )
-transitions = [ "Idle", "Walk", SubResource( 11 ), "Walk", "Idle", SubResource( 12 ), "Idle", "Dash", SubResource( 13 ), "Dash", "Idle", SubResource( 14 ), "Walk", "Dash", SubResource( 15 ), "Dash", "Walk", SubResource( 16 ), "Idle", "Jump", SubResource( 19 ), "Walk", "Jump", SubResource( 20 ), "Jump", "Hover", SubResource( 25 ), "Hover", "Fall", SubResource( 26 ), "Fall", "Idle", SubResource( 27 ), "Fall", "Walk", SubResource( 28 ), "Fall", "Dash", SubResource( 29 ) ]
+transitions = [ "Idle", "Walk", SubResource( 11 ), "Walk", "Idle", SubResource( 12 ), "Idle", "Dash", SubResource( 13 ), "Dash", "Idle", SubResource( 14 ), "Walk", "Dash", SubResource( 15 ), "Dash", "Walk", SubResource( 16 ), "Idle", "Jump", SubResource( 19 ), "Walk", "Jump", SubResource( 20 ), "Jump", "Hover", SubResource( 25 ), "Hover", "Fall", SubResource( 26 ), "Fall", "Idle", SubResource( 27 ), "Fall", "Walk", SubResource( 28 ), "Fall", "Dash", SubResource( 29 ), "Idle", "Heal", SubResource( 32 ), "Walk", "Heal", SubResource( 33 ), "Heal", "Idle", SubResource( 34 ) ]
 start_node = "Idle"
-graph_offset = Vector2( 0, -138.475 )
+graph_offset = Vector2( 0, 67.8 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=4]
 
@@ -233,6 +266,7 @@ shape = SubResource( 1 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Body"]
 anims/Dash = SubResource( 5 )
 anims/Fall = SubResource( 21 )
+anims/Heal = SubResource( 30 )
 anims/Hover = SubResource( 22 )
 anims/Idle = SubResource( 2 )
 anims/Jump = SubResource( 17 )
@@ -244,3 +278,15 @@ tree_root = SubResource( 3 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 4 )
+
+[node name="Heal" type="Timer" parent="Body"]
+process_mode = 0
+wait_time = 0.5
+one_shot = true
+
+[node name="Knockback" type="Timer" parent="Body"]
+process_mode = 0
+one_shot = true
+
+[connection signal="timeout" from="Body/Heal" to="Body" method="_on_Heal_timeout"]
+[connection signal="timeout" from="Body/Knockback" to="Body" method="_on_Knockback_timeout"]
