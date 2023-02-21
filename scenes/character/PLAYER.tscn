@@ -298,5 +298,10 @@ one_shot = true
 process_mode = 0
 one_shot = true
 
+[node name="Coyote" type="Timer" parent="Body"]
+process_mode = 0
+wait_time = 0.1
+one_shot = true
+
 [connection signal="timeout" from="Body/Heal" to="Body" method="_on_Heal_timeout"]
 [connection signal="timeout" from="Body/Knockback" to="Body" method="_on_Knockback_timeout"]

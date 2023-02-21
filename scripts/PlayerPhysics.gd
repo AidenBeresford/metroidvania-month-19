@@ -10,12 +10,13 @@ onready var anim_tree = get_node("AnimationTree")
 onready var playback = anim_tree.get("parameters/playback")
 
 var velocity = Vector2()
-var state = STATE
+var state = STATE.IDLE
 var dir = DIR.RIGHT
 var dirval = 1
 var statelock = false
+var coyotelock = true
 
-const SPD = 180
+const SPD = 230
 const DSH = 2
 const JMP = -800
 const GRV = 25
@@ -25,6 +26,8 @@ func _physics_process(delta):
 	
 	if !statelock:
 		state_manager()
+	
+	print(grounded())
 	
 	# player abilities based on state
 	match state:
@@ -46,10 +49,12 @@ func _physics_process(delta):
 		STATE.DASH:
 			playback.travel("Dash")
 			
+			if (!$Coyote.is_stopped() and velocity.y > 0) or grounded():
+				jump()
+			
 			if !grounded():
 				velocity.y += GRV
 			
-			jump()
 			dash()
 		
 		STATE.JUMP:
@@ -72,6 +77,9 @@ func _physics_process(delta):
 			velocity.y += GRV
 			turn()
 			walk()
+			
+			if !$Coyote.is_stopped():
+				jump()
 		
 		STATE.HEALING:
 			playback.travel("Heal")
@@ -99,47 +107,71 @@ func state_manager():
 	
 	if grounded():
 		
+		coyotelock = false
+		
 		velocity.y = 0
 		
 		if Input.is_action_pressed("dash"):
+			
 			if !is_on_wall():
 				state = STATE.DASH
+			
 			else:
 				knockback()
 			
 		elif Input.is_action_pressed("heal"):
+			
 			state = STATE.HEALING
+		
 		else:
+			
 			$Heal.stop()
 			
 			if meth.absround(velocity.x) < 10:
 				state = STATE.IDLE
 			else:
 				state = STATE.WALK
+	
 	else:
 		
+		if coyotelock != true:
+			
+			$Coyote.start(.1)
+		
+		coyotelock = true
+		
 		if !Input.is_action_pressed("dash"):
+			
 			if velocity.y <= 40 and velocity.y >= -40:
 				state = STATE.HOVER
-			elif velocity.y < 10:
+			
+			elif velocity.y < 40:
 				state = STATE.JUMP
-			elif velocity.y > 10:
+			
+			elif velocity.y > 40:
 				state = STATE.FALL
+		
 		else:
-			if !is_on_wall():
-				state = STATE.DASH
-			else:
+			
+			if is_on_wall():
 				knockback()
+			else:
+				state = STATE.DASH
 
 
 func turn():
 	
 	if Input.is_action_pressed("right"):
+		
 		$Sprite.flip_h = false
+		
 		dir = DIR.RIGHT
 		dirval = 1
+	
 	elif Input.is_action_pressed("left"):
+		
 		$Sprite.flip_h = true
+		
 		dir = DIR.LEFT
 		dirval = -1
 
@@ -149,8 +181,10 @@ func walk():
 	# walk command for idle and walk states
 	if Input.is_action_pressed("right"):
 		velocity.x = lerp(velocity.x, SPD, .20)
+	
 	elif Input.is_action_pressed("left"):
 		velocity.x = lerp(velocity.x, -SPD, .20)
+	
 	else:
 		velocity.x = lerp(velocity.x, 0, .20)
 
@@ -158,15 +192,16 @@ func walk():
 func jump():
 	
 	# jump command for idle and walk states
-	if Input.is_action_pressed("jump") and grounded():
+	if Input.is_action_pressed("jump"):
 		velocity.y = JMP
 
 
 func dash():
+	
 	velocity.x = SPD*DSH*dirval
 
 
-func knockback():
+func knockback():	
 	
 	state = STATE.KNOCKBACK
 	statelock = true
@@ -176,8 +211,10 @@ func knockback():
 
 
 func grounded():
+	
 	if $Floor1.is_colliding() or $Floor2.is_colliding():
 		return true
+	
 	else:
 		return false
 
@@ -187,6 +224,7 @@ func _on_Heal_timeout():
 
 
 func _on_Knockback_timeout():
+	
 	statelock = false
 	velocity.x = 0
 	state = STATE.IDLE
