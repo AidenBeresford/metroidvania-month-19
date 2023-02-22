@@ -27,8 +27,6 @@ func _physics_process(delta):
 	if !statelock:
 		state_manager()
 	
-	print(grounded())
-	
 	# player abilities based on state
 	match state:
 		
