@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Arena Environment Objects.png-8b88aa3fe6c3ea86c083a43ba77ac61d.stex"
+path="res://.import/Garden Tiles.png-063c8d07d524a7c1003454436f0cd134.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/objects/Break Block/Arena Environment Objects.png"
-dest_files=[ "res://.import/Arena Environment Objects.png-8b88aa3fe6c3ea86c083a43ba77ac61d.stex" ]
+source_file="res://assets/sprites/tilesets/Garden Tiles.png"
+dest_files=[ "res://.import/Garden Tiles.png-063c8d07d524a7c1003454436f0cd134.stex" ]
 
 [params]
 

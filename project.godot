@@ -11,12 +11,13 @@ config_version=4
 [application]
 
 config/name="Metroidvania Month"
-run/main_scene="res://scenes/rooms/ROOM_DBG_01.tscn"
+run/main_scene="res://scenes/rooms/ROOM_ARN_00.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 meth="*res://scripts/Global/UsefulMethods.gd"
+room="*res://scripts/Global/RoomHolding.gd"
 
 [display]
 

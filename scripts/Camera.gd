@@ -21,9 +21,6 @@ func _move_cam():
 	position.x = lerp(position.x, player.global_position.x, .20)
 	position.y = lerp(position.y, player.global_position.y, .20)
 	
-	print("Preclamp "  + str(position))
-	
 	position.x = clamp(global_position.x, minClampX, maxClampX)
 	position.y = clamp(global_position.y, minClampY, maxClampY)
 	
-	print("Postclamp "  + str(position))
