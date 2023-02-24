@@ -4,14 +4,11 @@ enum STATE {IDLE, WALK, DASH,
 JUMP, HOVER, FALL,
 HEALING, KNOCKBACK, DEATH}
 
-enum DIR {LEFT, RIGHT}
-
 onready var anim_tree = get_node("AnimationTree")
 onready var playback = anim_tree.get("parameters/playback")
 
 var velocity = Vector2()
 var state = STATE.IDLE
-var dir = DIR.RIGHT
 var dirval = 1
 var statelock = false
 var coyotelock = true
@@ -23,6 +20,9 @@ const GRV = 25
 
 
 func _ready():
+	
+	$Sprite.flip_h = room.flip
+	dirval = room.dir
 	
 	for children in get_parent().get_parent().get_child_count():
 		
@@ -173,14 +173,12 @@ func turn():
 		
 		$Sprite.flip_h = false
 		
-		dir = DIR.RIGHT
 		dirval = 1
 	
 	elif Input.is_action_pressed("left"):
 		
 		$Sprite.flip_h = true
 		
-		dir = DIR.LEFT
 		dirval = -1
 
 

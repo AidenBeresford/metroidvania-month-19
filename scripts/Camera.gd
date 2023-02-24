@@ -8,7 +8,12 @@ export var maxClampX : float
 export var maxClampY : float
 
 func _ready():
+	
 	current = true
+	position = player.global_position
+	
+	position.x = clamp(global_position.x, minClampX, maxClampX)
+	position.y = clamp(global_position.y, minClampY, maxClampY)
 
 
 func _physics_process(delta):

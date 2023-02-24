@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/tilemaps/TMAP_ARENA_BG.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/misc/CAMERA.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scenes/tilemaps/TMAP_ARENA_FG.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/character/PLAYER.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/misc/ROOM_TRANSITION.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/objects/BREAK_BLOCK.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 319.875, 20 )
@@ -21,6 +22,9 @@ extents = Vector2( 32, 20 )
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 64, 96 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 64, 64 )
 
 [node name="ARN01" type="Node2D"]
 
@@ -41,6 +45,7 @@ maxClampX = 2880.0
 maxClampY = 540.0
 
 [node name="Player" parent="." instance=ExtResource( 5 )]
+position = Vector2( 576, 832 )
 z_index = 1
 
 [node name="Platforms" type="StaticBody2D" parent="."]
@@ -66,14 +71,38 @@ position = Vector2( 3360, -36 )
 shape = SubResource( 4 )
 
 [node name="Transition" parent="." instance=ExtResource( 6 )]
-position = Vector2( 3937, 791 )
+position = Vector2( -128, 800 )
 transition_scene = "res://scenes/rooms/room_arn_00.tscn"
 
 [node name="CollisionShape2D" parent="Transition" index="0"]
-position = Vector2( -4065, 9 )
 shape = SubResource( 5 )
 
+[node name="Transition2" parent="." instance=ExtResource( 6 )]
+position = Vector2( -128, -160 )
+transition_scene = "res://scenes/rooms/room_arn_00.tscn"
+
+[node name="CollisionShape2D" parent="Transition2" index="0"]
+shape = SubResource( 5 )
+
+[node name="Transition3" parent="." instance=ExtResource( 6 )]
+position = Vector2( 3968, 832 )
+transition_scene = "res://scenes/rooms/room_arn_00.tscn"
+
+[node name="CollisionShape2D" parent="Transition3" index="0"]
+shape = SubResource( 6 )
+
 [node name="ARN00" type="Position2D" parent="."]
-position = Vector2( -16, 832 )
+position = Vector2( 8, 832 )
+
+[node name="ARN02" type="Position2D" parent="."]
+position = Vector2( 8, -128 )
+
+[node name="ARN03" type="Position2D" parent="."]
+position = Vector2( 3832, 832 )
+
+[node name="Block" parent="." instance=ExtResource( 7 )]
+position = Vector2( 3328, 832 )
 
 [editable path="Transition"]
+[editable path="Transition2"]
+[editable path="Transition3"]
