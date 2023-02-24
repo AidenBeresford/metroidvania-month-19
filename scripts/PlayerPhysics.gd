@@ -22,6 +22,16 @@ const JMP = -800
 const GRV = 25
 
 
+func _ready():
+	
+	for children in get_parent().get_parent().get_child_count():
+		
+		if get_parent().get_parent().get_child(children).name == room.last_room:
+			
+			global_position = get_parent().get_parent().get_child(children).position
+	
+
+
 func _physics_process(delta):
 	
 	if !statelock:

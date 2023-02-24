@@ -1,6 +1,6 @@
 extends Area2D
 
-export var transition_scene : PackedScene
+export var transition_scene : String
 
 
 func _on_Transition_body_entered(body):
@@ -15,5 +15,5 @@ func transition(scene):
 		
 		room.last_room = get_parent().name
 		
-		get_tree().change_scene_to(transition_scene)
+		get_tree().change_scene(scene)
 		
