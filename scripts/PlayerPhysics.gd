@@ -13,7 +13,7 @@ var dirval = 1
 var statelock = false
 var coyotelock = true
 
-const SPD = 230
+const SPD = 250
 const DSH = 2
 const JMP = -800
 const GRV = 25
