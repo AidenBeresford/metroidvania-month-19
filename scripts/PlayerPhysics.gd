@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-enum STATE {IDLE, WALK, DASH, 
+enum STATE {IDLE, WALK, DASH, SLIDE, 
 JUMP, HOVER, FALL,
 HEALING, KNOCKBACK, DEATH}
 
@@ -65,6 +65,11 @@ func _physics_process(delta):
 			
 			dash()
 		
+		STATE.SLIDE:
+			playback.travel("Slide")
+			
+			dash()
+		
 		STATE.JUMP:
 			playback.travel("Jump")
 			
@@ -121,11 +126,16 @@ func state_manager():
 		
 		if Input.is_action_pressed("dash"):
 			
-			if !is_on_wall():
-				state = STATE.DASH
+			if Input.is_action_pressed("down"):
+				state = STATE.SLIDE
 			
 			else:
-				knockback()
+				
+				if !is_on_wall():
+					state = STATE.DASH
+				
+				else:
+					knockback()
 			
 		elif Input.is_action_pressed("heal"):
 			
