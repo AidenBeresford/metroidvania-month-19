@@ -37,6 +37,11 @@ func _physics_process(delta):
 	if !statelock:
 		state_manager()
 	
+	else:
+		
+		if !topblocked() and state == STATE.SLIDE:
+			statelock = false 
+	
 	# player abilities based on state
 	match state:
 		
@@ -127,6 +132,7 @@ func state_manager():
 		if Input.is_action_pressed("dash"):
 			
 			if Input.is_action_pressed("down"):
+				statelock = true
 				state = STATE.SLIDE
 			
 			else:
@@ -229,6 +235,15 @@ func knockback():
 func grounded():
 	
 	if $Floor1.is_colliding() or $Floor2.is_colliding():
+		return true
+	
+	else:
+		return false
+
+
+func topblocked():
+	
+	if $Ceil1.is_colliding() or $Ceil2.is_colliding():
 		return true
 	
 	else:
