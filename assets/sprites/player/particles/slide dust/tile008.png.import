@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Minotaur Character Ground Slide.png-901fa7d1a6cd4007e846b3a926eede4a.stex"
+path="res://.import/tile008.png-9478842146911106d4f1234d732bb0f8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/player/Minotaur Character Ground Slide.png"
-dest_files=[ "res://.import/Minotaur Character Ground Slide.png-901fa7d1a6cd4007e846b3a926eede4a.stex" ]
+source_file="res://assets/sprites/player/particles/slide dust/tile008.png"
+dest_files=[ "res://.import/tile008.png-9478842146911106d4f1234d732bb0f8.stex" ]
 
 [params]
 
