@@ -14,6 +14,7 @@ func _process(delta):
 			if Input.is_action_just_pressed("up"):
 				
 				get_parent().get_node("AnimationPlayer").play("Saving")
+				save_game()
 
 
 func save_game():
@@ -24,3 +25,10 @@ func save_game():
 		"items" : player.current_items,
 		"last_room" : room.last_room
 	}
+	
+	var save = File.new()
+	save.open("res://savegame.json", File.WRITE)
+	
+	save.store_line(to_json(save_dict))
+	
+	save.close()
