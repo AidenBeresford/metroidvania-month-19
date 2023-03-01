@@ -64,6 +64,7 @@ position = Vector2( 2048, 1824 )
 
 [node name="Transition3" parent="." instance=ExtResource( 6 )]
 position = Vector2( -128, 1824 )
+transition_scene = "res://scenes/rooms/room_arn_05.tscn"
 
 [node name="Transition4" parent="." instance=ExtResource( 6 )]
 position = Vector2( -128, -352 )
@@ -126,6 +127,15 @@ shape = SubResource( 8 )
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 244, 305 )
+
+[node name="ARN03" type="Position2D" parent="."]
+position = Vector2( 8, 320 )
+
+[node name="ARN05" type="Position2D" parent="."]
+position = Vector2( 8, 1856 )
+
+[node name="ARN06" type="Position2D" parent="."]
+position = Vector2( 1912, 1856 )
 
 [editable path="Transition"]
 [editable path="Transition5"]
