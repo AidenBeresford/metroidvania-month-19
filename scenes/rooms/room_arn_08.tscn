@@ -23,7 +23,7 @@ position = Vector2( 960, 768 )
 
 [node name="Transition" parent="." instance=ExtResource( 5 )]
 position = Vector2( 2048, 736 )
-transition_scene = "res://scenes/rooms/room_arn_04.tscn"
+transition_scene = "res://scenes/rooms/room_arn_07.tscn"
 
 [node name="ARN07" type="Position2D" parent="."]
 position = Vector2( 1912, 768 )

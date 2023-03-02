@@ -12,6 +12,7 @@ var state = STATE.IDLE
 var dirval = 1
 var statelock = false
 var coyotelock = true
+var doublejump = false
 
 const SPD = 250
 const DSH = 2
@@ -67,6 +68,11 @@ func _physics_process(delta):
 			
 			if !grounded():
 				velocity.y += GRV
+				
+				if doublejump == true and Input.is_action_just_pressed("jump") and velocity.y > 0:
+					
+					jump()
+					doublejump = false
 			
 			dash()
 		
@@ -98,6 +104,9 @@ func _physics_process(delta):
 			
 			if !$Coyote.is_stopped():
 				jump()
+			elif doublejump == true and Input.is_action_just_pressed("jump"):
+				jump()
+				doublejump = false
 		
 		STATE.HEALING:
 			playback.travel("Heal")
@@ -105,7 +114,7 @@ func _physics_process(delta):
 			velocity.x = 0
 			
 			if $Heal.is_stopped():
-				$Heal.start(.4)
+				$Heal.start(5)
 		
 		STATE.KNOCKBACK:
 			playback.travel("Fall")
@@ -126,6 +135,7 @@ func state_manager():
 	if grounded():
 		
 		coyotelock = false
+		doublejump = true
 		
 		velocity.y = 0
 		
@@ -251,7 +261,8 @@ func topblocked():
 
 
 func _on_Heal_timeout():
-	pass
+	player.hp += 1
+	player.hp = clamp(player.hp, 0, player.maxhp)
 
 
 func _on_Knockback_timeout():
