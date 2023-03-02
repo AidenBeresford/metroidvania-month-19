@@ -61,6 +61,7 @@ position = Vector2( 0, -8 )
 
 [node name="Transition2" parent="." instance=ExtResource( 6 )]
 position = Vector2( 2048, 1824 )
+transition_scene = "res://scenes/rooms/room_arn_06.tscn"
 
 [node name="Transition3" parent="." instance=ExtResource( 6 )]
 position = Vector2( -128, 1824 )

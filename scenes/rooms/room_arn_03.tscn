@@ -44,6 +44,7 @@ shape = SubResource( 2 )
 
 [node name="Transition2" parent="." instance=ExtResource( 5 )]
 position = Vector2( 2048, 288 )
+transition_scene = "res://scenes/rooms/room_arn_04.tscn"
 
 [node name="CollisionShape2D" parent="Transition2" index="0"]
 shape = SubResource( 3 )
