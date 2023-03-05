@@ -16,14 +16,18 @@ var doublejump = false
 
 const SPD = 250
 const DSH = 2
-const JMP = -800
-const GRV = 25
+const JMP = -900
+const GRV = 30
 
 
 func _ready():
 	
 	$Sprite.flip_h = room.flip
 	dirval = room.dir
+	velocity = room.velocity
+	
+	if !grounded():
+		velocity.y -= 500
 	
 	for children in get_parent().get_parent().get_child_count():
 		
