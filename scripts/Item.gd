@@ -17,4 +17,4 @@ func _on_Area2D_body_entered(body):
 		
 		if bodies.get_parent().name == "Player":
 			player.current_items[ability] = true
-			queue_free()
+			$Control.visible = true

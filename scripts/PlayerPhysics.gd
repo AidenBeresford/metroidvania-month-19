@@ -129,7 +129,7 @@ func _physics_process(delta):
 				$Knockback.start(.5)
 		
 		STATE.DEATH:
-			pass
+			playback.travel("")
 	
 	move_and_slide_with_snap(velocity, Vector2(), Vector2.UP)
 
