@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Arena.ogg-2b8a722bd32d7670655c3d4991d47f6b.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/music/Arena.ogg"
+dest_files=[ "res://.import/Arena.ogg-2b8a722bd32d7670655c3d4991d47f6b.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

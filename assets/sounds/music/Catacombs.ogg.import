@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Catacombs.ogg-541d2d25dc15cad57483c923be306fa4.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/music/Catacombs.ogg"
+dest_files=[ "res://.import/Catacombs.ogg-541d2d25dc15cad57483c923be306fa4.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
