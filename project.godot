@@ -19,6 +19,7 @@ config/icon="res://icon.png"
 meth="*res://scripts/Global/UsefulMethods.gd"
 room="*res://scripts/Global/RoomHolding.gd"
 player="*res://scripts/Global/PlayerStats.gd"
+music="*res://scenes/misc/MUSIC_PLAYER.tscn"
 
 [display]
 

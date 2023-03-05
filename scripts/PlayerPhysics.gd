@@ -53,6 +53,8 @@ func _physics_process(delta):
 		STATE.IDLE:
 			playback.travel("Idle")
 			
+			music.adjust_pitch(1)
+			
 			turn()
 			walk()
 			jump()
@@ -60,12 +62,16 @@ func _physics_process(delta):
 		STATE.WALK:
 			playback.travel("Walk")
 			
+			music.adjust_pitch(1)
+			
 			turn()
 			walk()
 			jump()
 		
 		STATE.DASH:
 			playback.travel("Dash")
+			
+			music.adjust_pitch(1.01)
 			
 			if (!$Coyote.is_stopped() and velocity.y > 0) or grounded():
 				jump()
@@ -83,10 +89,14 @@ func _physics_process(delta):
 		STATE.SLIDE:
 			playback.travel("Slide")
 			
+			music.adjust_pitch(0.99)
+			
 			dash()
 		
 		STATE.JUMP:
 			playback.travel("Jump")
+			
+			music.adjust_pitch(1)
 			
 			velocity.y += GRV
 			turn()
@@ -95,12 +105,16 @@ func _physics_process(delta):
 		STATE.HOVER:
 			playback.travel("Hover")
 			
+			music.adjust_pitch(1)
+			
 			velocity.y += GRV
 			turn()
 			walk()
 		
 		STATE.FALL:
 			playback.travel("Fall")
+			
+			music.adjust_pitch(1)
 			
 			velocity.y += GRV
 			turn()
@@ -115,6 +129,8 @@ func _physics_process(delta):
 		STATE.HEALING:
 			playback.travel("Heal")
 			
+			music.adjust_pitch(1)
+			
 			velocity.x = 0
 			
 			if $Heal.is_stopped():
@@ -123,13 +139,15 @@ func _physics_process(delta):
 		STATE.KNOCKBACK:
 			playback.travel("Fall")
 			
+			music.adjust_pitch(1)
+			
 			velocity.y += GRV*2
 			
 			if $Knockback.is_stopped():
 				$Knockback.start(.5)
 		
 		STATE.DEATH:
-			playback.travel("")
+			pass
 	
 	move_and_slide_with_snap(velocity, Vector2(), Vector2.UP)
 
