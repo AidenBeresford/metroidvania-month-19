@@ -1,0 +1,33 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/sprites/enemies/Spearthrower/tile028.png" type="Texture" id=1]
+[ext_resource path="res://assets/sprites/enemies/Spearthrower/tile029.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/enemies/Spearthrower/tile027.png" type="Texture" id=3]
+[ext_resource path="res://scripts/ThrownProjectile.gd" type="Script" id=4]
+[ext_resource path="res://assets/sprites/enemies/Spearthrower/tile026.png" type="Texture" id=5]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 1 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "Thrown",
+"speed": 15.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 7, 2 )
+
+[node name="Projectile" type="KinematicBody2D"]
+script = ExtResource( 4 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "Thrown"
+frame = 3
+playing = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( 4, 0 )
+shape = SubResource( 2 )
